@@ -12,7 +12,7 @@ All functions are implemented under the `WebPDecode` and `WebPEncode` static cla
 
 ## Building
 
-Set `JAVA_HOME` to JDK 8 or later, and run `make`. The library will be built to `build/libwebp4j.jar`.
+Set `JAVA_HOME` to JDK 9 or later, and run `make`. The library will be built to `build/libwebp4j.jar`.
 
 ## Examples
 
