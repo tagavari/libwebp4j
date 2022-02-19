@@ -1,10 +1,11 @@
+#Versions
+LIBRARY_VERSION := 1.0.0
+WEBP_VERSION := 1.2.2
+JAVA_TARGET := 8
+
 #Java compiler
 JC := javac
 JA := jar
-
-#Versions
-WEBP_VERSION := 1.2.2
-JAVA_TARGET := 8
 
 #OS-specific values
 ifeq ($(OS),Windows_NT)
@@ -87,6 +88,16 @@ $(BUILD_DIR)/%.class: $(SRC_DIR_JAVA)/%.java
 	@mkdir -p $(BUILD_DIR)
 	@rm -f $(GENERATED_HEADER_DIR)/$(subst /,_,$*).h
 	$(JC) -d $(BUILD_DIR) -cp $(SRC_DIR_JAVA) -h $(GENERATED_HEADER_DIR) $(JCFLAGS) $<
+
+#Install library to local Maven repository
+install: $(TARGET_JAVA_LIB)
+	mvn install:install-file \
+		-Dfile=$(TARGET_JAVA_LIB) \
+		-DgroupId=me.tagavari \
+		-DartifactId=libwebp4j \
+		-Dversion=$(LIBRARY_VERSION) \
+		-Dpackaging=jar \
+		-DgeneratePom=true
 
 clean:
 	rm -r $(BUILD_DIR)
