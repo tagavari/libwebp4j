@@ -1,6 +1,5 @@
 #Versions
 LIBRARY_VERSION := 1.0.0
-WEBP_VERSION := 1.2.2
 JAVA_TARGET := 8
 
 #Java compiler
@@ -8,28 +7,18 @@ JC := javac
 JA := jar
 
 #OS-specific values
+UNAME_M := $(shell uname -m)
 ifeq ($(OS),Windows_NT)
 	TARGET_OS := windows
 	SHARED_LIB_EXT := dll
-
-	WEBP_URL := https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-$(WEBP_VERSION)-windows-x64.zip
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		TARGET_OS := linux
 		SHARED_LIB_EXT := so
-
-		WEBP_URL := https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-$(WEBP_VERSION)-linux-x86-64.tar.gz
 	else ifeq ($(UNAME_S),Darwin)
 		TARGET_OS := mac
 		SHARED_LIB_EXT := dylib
-
-		UNAME_M := $(shell uname -m)
-		ifeq ($(UNAME_M),x86_64)
-			WEBP_URL := https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-$(WEBP_VERSION)-mac-x86-64.tar.gz
-		else
-			WEBP_URL := https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-$(WEBP_VERSION)-mac-arm64.tar.gz
-		endif
 	endif
 endif
 
@@ -39,9 +28,7 @@ SRC_DIR := src
 
 PACKAGE_PATH = me/tagavari/libwebp4j
 TARGET_C_LIB := $(BUILD_DIR)/$(PACKAGE_PATH)/libwebp4j.$(SHARED_LIB_EXT)
-TARGET_JAVA_LIB := $(BUILD_DIR)/libwebp4j.jar
-
-LIBWEBP_DIR := $(BUILD_DIR)/libwebp-$(WEBP_VERSION)
+TARGET_JAVA_LIB := $(BUILD_DIR)/libwebp4j-$(TARGET_OS)-$(UNAME_M).jar
 
 #C sources
 SRC_DIR_C := $(SRC_DIR)/c
@@ -57,24 +44,19 @@ GENERATED_HEADER_DIR := $(BUILD_DIR)/java_include
 #Compiler flags
 CPPFLAGS := -I$(SRC_DIR_C) \
 	-I$(GENERATED_HEADER_DIR) \
-	$(addprefix -I,$(shell find $(JAVA_HOME)/include -type d)) \
-	-I$(LIBWEBP_DIR)/include
-LDFLAGS := -L$(LIBWEBP_DIR)/lib -lwebp
+	$(addprefix -I,$(shell find $(JAVA_HOME)/include -type d))
+LDFLAGS := -lwebp
 JCFLAGS := --release $(JAVA_TARGET) -parameters
 
 #Shorthand compile jar library
 all: $(TARGET_JAVA_LIB)
-
-#Fetch libwebp builds from Google's servers
-$(LIBWEBP_DIR):
-	mkdir $(LIBWEBP_DIR) && curl -s $(WEBP_URL) | tar -xf - -C $(LIBWEBP_DIR) --strip-components 1
 
 #Compile object files to library
 $(TARGET_C_LIB): $(OBJ_LIST_C)
 	$(CC) $(OBJ_LIST_C) -o $@ $(LDFLAGS) -shared
 
 #Compile .c to .o
-$(BUILD_DIR)/%.o: $(SRC_DIR_C)/%.c $(LIBWEBP_DIR)
+$(BUILD_DIR)/%.o: $(SRC_DIR_C)/%.c
 	@mkdir -p $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
