@@ -17,7 +17,7 @@ else
 		TARGET_OS := linux
 		SHARED_LIB_EXT := so
 	else ifeq ($(UNAME_S),Darwin)
-		TARGET_OS := mac
+		TARGET_OS := macos
 		SHARED_LIB_EXT := dylib
 	endif
 endif
@@ -76,7 +76,7 @@ install: $(TARGET_JAVA_LIB)
 	mvn install:install-file \
 		-Dfile=$(TARGET_JAVA_LIB) \
 		-DgroupId=me.tagavari \
-		-DartifactId=libwebp4j \
+		-DartifactId=libwebp4j-$(TARGET_OS)-$(UNAME_M) \
 		-Dversion=$(LIBRARY_VERSION) \
 		-Dpackaging=jar \
 		-DgeneratePom=true
