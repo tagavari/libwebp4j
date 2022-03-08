@@ -21,19 +21,19 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: webmproject/libwebp
-        ref: v$LIBWEBP_VER
-        path: $LIBWEBP_DIR
+        ref: v${{ $LIBWEBP_VER }}
+        path: ${{ env.LIBWEBP_DIR }}
       
     - name: Configure libwebp
-      working-directory: $LIBWEBP_DIR
+      working-directory: ${{ env.LIBWEBP_DIR }}
       run: ./configure
       
     - name: Make libwebp
-      working-directory: $LIBWEBP_DIR
+      working-directory: ${{ env.LIBWEBP_DIR }}
       run: make
       
     - name: Install libwebp
-      working-directory: $LIBWEBP_DIR
+      working-directory: ${{ env.LIBWEBP_DIR }}
       run: sudo make install
       
     - uses: actions/checkout@v3
@@ -48,7 +48,8 @@ jobs:
       
     - uses: actions/upload-artifact@v3.0.0
       with:
-        name: build/*.jar
+        name: libwebp-linux
+        path: build/*.jar
   
   build-mac:
     runs-on: macos-latest
@@ -68,4 +69,5 @@ jobs:
       
     - uses: actions/upload-artifact@v3.0.0
       with:
-        name: build/*.jar
+        name: libwebp-macos
+        path: build/*.jar
