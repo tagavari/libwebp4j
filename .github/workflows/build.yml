@@ -20,7 +20,7 @@ jobs:
     - name: Download libwebp
       uses: actions/checkout@v3
       with:
-        repository: 'https://chromium.googlesource.com/webm/libwebp'
+        repository: webmproject/libwebp
         ref: v$LIBWEBP_VER
         path: $LIBWEBP_DIR
       
@@ -54,7 +54,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: Install libwebp
-      run: brew install webp@$LIBWEBP_VER
+      run: brew install webp
     
     - uses: actions/checkout@v3
       
