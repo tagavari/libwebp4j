@@ -14,7 +14,10 @@ jobs:
   build-linux:
     runs-on: ubuntu-latest
     steps:
-    - name: Install dependencies
+    - name: Install libwebp configure dependencies
+      run: sudo apt install gcc make autoconf automake libtool
+      
+    - name: Install libwebp build dependencies
       run: sudo apt install libjpeg-dev libpng-dev libtiff-dev libgif-dev
       
     - name: Download libwebp
@@ -23,6 +26,10 @@ jobs:
         repository: webmproject/libwebp
         ref: v${{ env.LIBWEBP_VER }}
         path: ${{ env.LIBWEBP_DIR }}
+    
+    - name: Autogen libwebp
+      working-directory: ${{ env.LIBWEBP_DIR }}
+      run: ./autogen.sh
       
     - name: Configure libwebp
       working-directory: ${{ env.LIBWEBP_DIR }}
