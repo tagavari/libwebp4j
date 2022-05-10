@@ -21,9 +21,14 @@ add_library(webp4j SHARED decode.c encode.c errors.c errors.h converter.c conver
 #target_link_libraries(webp4j webp)
 
 #Add homebrew search paths for Apple Silicon
-if(APPLE AND CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
-    target_link_directories(webp4j PRIVATE "/opt/homebrew/lib")
-    target_include_directories(webp4j PRIVATE "/opt/homebrew/include")
+if(APPLE)
+    if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
+        target_link_directories(webp4j PRIVATE "/opt/homebrew/lib")
+        target_include_directories(webp4j PRIVATE "/opt/homebrew/include")
+    else()
+        target_link_directories(webp4j PRIVATE "/usr/local/lib")
+        target_include_directories(webp4j PRIVATE "/usr/local/include")
+    endif()
 endif()
 
 target_link_libraries(webp4j webp)
