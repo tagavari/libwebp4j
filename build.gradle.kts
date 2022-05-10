@@ -121,7 +121,7 @@ publishing {
     }
     
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("gpr") {
             from(components["java"])
             
             artifactId = "libwebp4j-$nativeString"
