@@ -64,7 +64,7 @@ jobs:
                     path: build/libs/*.jar
 
             -   name: Publish
-                if: github.event.action == 'push'
+                if: github.event_name == 'push'
                 env:
                     GITHUB_ACTOR: ${{ github.actor }}
                     GITHUB_TOKEN: ${{ github.token }}
