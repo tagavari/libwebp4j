@@ -65,6 +65,7 @@ jobs:
 
             -   name: Publish
                 if: github.event_name == 'push'
+                continue-on-error: true
                 env:
                     GITHUB_ACTOR: ${{ github.actor }}
                     GITHUB_TOKEN: ${{ github.token }}
@@ -97,6 +98,7 @@ jobs:
             
             -   name: Publish
                 if: github.event_name == 'push'
+                continue-on-error: true
                 env:
                     GITHUB_ACTOR: ${{ github.actor }}
                     GITHUB_TOKEN: ${{ github.token }}
