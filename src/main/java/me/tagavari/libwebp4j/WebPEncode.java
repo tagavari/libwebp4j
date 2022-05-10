@@ -1,7 +1,5 @@
 package me.tagavari.libwebp4j;
 
-import me.tagavari.libwebp4j.NativeLoader;
-
 public class WebPEncode {
 	static {
 		//Make sure the native library is loaded
@@ -9,7 +7,7 @@ public class WebPEncode {
 	}
 
 	private WebPEncode() {
-        
+    
     }
 
 	public static native int getVersion();

@@ -1,11 +1,6 @@
 package me.tagavari.libwebp4j;
 
-import me.tagavari.libwebp4j.NativeLoader;
-import me.tagavari.libwebp4j.data.WebPBitstreamFeatures;
-import me.tagavari.libwebp4j.data.WebPDecodedData;
-import me.tagavari.libwebp4j.data.WebPDecoderOptions;
-import me.tagavari.libwebp4j.data.WebPInfo;
-import me.tagavari.libwebp4j.data.WebPColorSpace;
+import me.tagavari.libwebp4j.data.*;
 import me.tagavari.libwebp4j.exception.WebPException;
 
 public class WebPDecode {
@@ -15,7 +10,7 @@ public class WebPDecode {
 	}
 
     private WebPDecode() {
-        
+    
     }
     
     public static native int getVersion();

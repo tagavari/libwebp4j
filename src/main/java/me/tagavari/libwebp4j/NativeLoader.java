@@ -2,17 +2,16 @@ package me.tagavari.libwebp4j;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.io.InputStream;
 
 class NativeLoader {
 	private static boolean isLoaded = false;
 
 	private static final String nativeLibraryName = "libwebp4j";
-	private static final String[] nativeLibraryExtensions = {"so", "dylib", "dll"};
+	private static final String[] nativeLibraryExtensions = {"so", "dll", "dylib"};
 
 	/**
 	 * Loads native libraries
@@ -24,7 +23,7 @@ class NativeLoader {
 		URL resourceURL = null;
 		String resourceExtension = null;
 		for(String extension : nativeLibraryExtensions) {
-			resourceURL = NativeLoader.class.getResource(nativeLibraryName + "." + extension);
+			resourceURL = NativeLoader.class.getClassLoader().getResource(nativeLibraryName + "." + extension);
 			if(resourceURL != null) {
 				resourceExtension = extension;
 				break;

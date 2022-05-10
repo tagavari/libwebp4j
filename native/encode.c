@@ -1,8 +1,7 @@
-#include <stdbool.h>
 #include <webp/encode.h>
 #include <jni.h>
+#include <me_tagavari_libwebp4j_WebPEncode.h>
 #include "errors.h"
-#include "converter.h"
 
 JNIEXPORT jint JNICALL Java_me_tagavari_libwebp4j_WebPEncode_getVersion(JNIEnv* env, jclass class) {
 	return WebPGetDecoderVersion();
@@ -35,7 +34,7 @@ static jbyteArray encodeSimple(JNIEnv* env, jbyteArray jData, jint width, jint h
 
 	//Run the operation
 	void* outputData;
-	int outputDataLength = encode(inputData, width, height, stride, qualityFactor, (uint8_t**) &outputData);
+	int outputDataLength = (int) encode(inputData, width, height, stride, qualityFactor, (uint8_t**) &outputData);
 
 	//Release the data, ignoring any changes (we don't modify the input array)
 	(*env)->ReleaseByteArrayElements(env, jData, inputData, JNI_ABORT);
@@ -89,7 +88,7 @@ static jbyteArray encodeSimpleLossless(JNIEnv* env, jbyteArray jData, jint width
 
 	//Run the operation
 	void* outputData;
-	int outputDataLength = encode(inputData, width, height, stride, (uint8_t**) &outputData);
+	int outputDataLength = (int) encode(inputData, width, height, stride, (uint8_t**) &outputData);
 
 	//Release the data, ignoring any changes (we don't modify the input array)
 	(*env)->ReleaseByteArrayElements(env, jData, inputData, JNI_ABORT);

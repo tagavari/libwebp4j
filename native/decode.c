@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <webp/decode.h>
 #include <jni.h>
+#include <me_tagavari_libwebp4j_WebPDecode.h>
 #include "errors.h"
 #include "converter.h"
 
@@ -20,10 +21,8 @@ static int getBytesPerPixel(WEBP_CSP_MODE colorspace) {
 		case MODE_BGR:
 		case MODE_YUV:
 			return 3;	
-			break;
 		default:
 			return 4;
-			break;
 	}
 }
 
@@ -130,17 +129,11 @@ static jobject decodeSimple(JNIEnv* env, jbyteArray jData, WEBP_SIMPLE_DECODE de
 
 	//Release the data, ignoring any changes (we don't modify the input array)
 	(*env)->ReleaseByteArrayElements(env, jData, inputData, JNI_ABORT);
-
-	if(outputData != NULL) {
-		//Return the result
-		jobject result = createDecodedData(env, outputData, outputDataLength, width, height);
-		WebPFree(outputData);
-		return result;
-	} else {
-		//Throw an error
-		webp4j_throwIOException(env);
-		return NULL;
-	}
+	
+	//Return the result
+	jobject result = createDecodedData(env, outputData, outputDataLength, width, height);
+	WebPFree(outputData);
+	return result;
 }
 
 JNIEXPORT jobject JNICALL Java_me_tagavari_libwebp4j_WebPDecode_decodeRGBA(JNIEnv* env, jclass class, jbyteArray jData) {

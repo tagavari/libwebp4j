@@ -5,10 +5,7 @@
 #include "converter.h"
 #include <webp/decode.h>
 
-#define classNameWebPColorSpace "me/tagavari/libwebp4j/data/WebPColorSpace"
 #define classNameWebPDecodedData "me/tagavari/libwebp4j/data/WebPDecodedData"
-
-#define loadEnumValue(env, jEnumClass, classPath, value) (*env)->GetStaticObjectField(env, jEnumClass, (*env)->GetStaticFieldID(env, jEnumClass, value, "L" classPath ";"))
 
 void applyWebPDecoderConfig(JNIEnv* env, jobject jOptions, WebPDecoderConfig* config) {
 	jclass jClassDecoderOptions = (*env)->GetObjectClass(env, jOptions);

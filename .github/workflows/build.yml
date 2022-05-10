@@ -1,80 +1,103 @@
-name: Build artifacts
+name: Build and publish artifacts
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches: [ main ]
+    pull_request:
+        branches: [ main ]
+    workflow_call:
 
 env:
-  LIBWEBP_VER: 1.2.2
-  LIBWEBP_DIR: libwebp
+    LIBWEBP_VER: 1.2.2
+    LIBWEBP_DIR: libwebp
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Install libwebp configure dependencies
-      run: sudo apt install gcc make autoconf automake libtool
-      
-    - name: Install libwebp build dependencies
-      run: sudo apt install libjpeg-dev libpng-dev libtiff-dev libgif-dev
-      
-    - name: Download libwebp
-      uses: actions/checkout@v3
-      with:
-        repository: webmproject/libwebp
-        ref: v${{ env.LIBWEBP_VER }}
-        path: ${{ env.LIBWEBP_DIR }}
+    build-linux:
+        name: Build Ubuntu
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Install libwebp configure dependencies
+                run: sudo apt install gcc make autoconf automake libtool
+            
+            -   name: Install libwebp build dependencies
+                run: sudo apt install libjpeg-dev libpng-dev libtiff-dev libgif-dev
+            
+            -   name: Download libwebp
+                uses: actions/checkout@v3
+                with:
+                    repository: webmproject/libwebp
+                    ref: v${{ env.LIBWEBP_VER }}
+                    path: ${{ env.LIBWEBP_DIR }}
+            
+            -   name: Autogen libwebp
+                working-directory: ${{ env.LIBWEBP_DIR }}
+                run: ./autogen.sh
+            
+            -   name: Configure libwebp
+                working-directory: ${{ env.LIBWEBP_DIR }}
+                run: ./configure
+            
+            -   name: Make libwebp
+                working-directory: ${{ env.LIBWEBP_DIR }}
+                run: make
+            
+            -   name: Install libwebp
+                working-directory: ${{ env.LIBWEBP_DIR }}
+                run: sudo make install
+            
+            -   uses: actions/checkout@v3
+            
+            -   uses: actions/setup-java@v2
+                with:
+                    distribution: 'temurin'
+                    java-version: '17'
+            
+            -   name: Set up Gradle
+                uses: gradle/gradle-build-action@v2
+            
+            -   name: Build
+                run: ./gradlew build
+            
+            -   uses: actions/upload-artifact@v3.0.0
+                with:
+                    name: libwebp-linux
+                    path: build/libs/*.jar
+
+            -   name: Publish
+                if: github.event.action == 'push'
+                env:
+                    GITHUB_ACTOR: ${{ github.actor }}
+                    GITHUB_TOKEN: ${{ github.token }}
+                run: ./gradlew publish
     
-    - name: Autogen libwebp
-      working-directory: ${{ env.LIBWEBP_DIR }}
-      run: ./autogen.sh
-      
-    - name: Configure libwebp
-      working-directory: ${{ env.LIBWEBP_DIR }}
-      run: ./configure
-      
-    - name: Make libwebp
-      working-directory: ${{ env.LIBWEBP_DIR }}
-      run: make
-      
-    - name: Install libwebp
-      working-directory: ${{ env.LIBWEBP_DIR }}
-      run: sudo make install
-      
-    - uses: actions/checkout@v3
-      
-    - uses: actions/setup-java@v2
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-      
-    - name: make
-      run: make
-      
-    - uses: actions/upload-artifact@v3.0.0
-      with:
-        name: libwebp-linux
-        path: build/*.jar
-  
-  build-mac:
-    runs-on: macos-latest
-    steps:
-    - name: Install libwebp
-      run: brew install webp
-    
-    - uses: actions/checkout@v3
-      
-    - uses: actions/setup-java@v2
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-    
-    - name: make
-      run: make
-      
-    - uses: actions/upload-artifact@v3.0.0
-      with:
-        name: libwebp-macos
-        path: build/*.jar
+    build-mac:
+        name: Build macOS
+        runs-on: macos-latest
+        steps:
+            -   name: Install libwebp
+                run: brew install webp
+            
+            -   uses: actions/checkout@v3
+            
+            -   uses: actions/setup-java@v2
+                with:
+                    distribution: 'temurin'
+                    java-version: '17'
+            
+            -   name: Set up Gradle
+                uses: gradle/gradle-build-action@v2
+            
+            -   name: Build
+                run: ./gradlew build
+            
+            -   uses: actions/upload-artifact@v3.0.0
+                with:
+                    name: libwebp-macos
+                    path: build/libs/*.jar
+            
+            -   name: Publish
+                if: github.event_name == 'push'
+                env:
+                    GITHUB_ACTOR: ${{ github.actor }}
+                    GITHUB_TOKEN: ${{ github.token }}
+                run: ./gradlew publish
