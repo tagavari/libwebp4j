@@ -27,8 +27,6 @@ jobs:
                     Add-Content $Env:GITHUB_PATH "${InstallPath}\lib"
                     Add-Content $Env:GITHUB_PATH "${InstallPath}\include"
                     Write-Output "Install path: $InstallPath"
-            -   run: Write-Output $Env:PATH
-            -   run:  tree libwebp-1.2.2-windows-x64 /F
             
             -   uses: actions/checkout@v3
             
@@ -39,6 +37,9 @@ jobs:
 
             -   name: Set up Gradle
                 uses: gradle/gradle-build-action@v2
+
+            -   run: Write-Output $Env:PATH
+            -   run: Tree libwebp-1.2.2-windows-x64 /F
 
             -   name: Build
                 run: .\gradlew.bat build
