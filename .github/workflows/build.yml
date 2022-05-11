@@ -23,8 +23,9 @@ jobs:
             -   name: Install libwebp
                 run: |
                     Expand-Archive -Path "${Env:LIBWEBP_ARCHIVE}.zip" -DestinationPath $Env:LIBWEBP_ARCHIVE
-                    Add-Content $Env:GITHUB_PATH "${Env:LIBWEBP_ARCHIVE}/${Env:LIBWEBP_ARCHIVE}/lib"
-                    Add-Content $Env:GITHUB_PATH "${Env:LIBWEBP_ARCHIVE}/${Env:LIBWEBP_ARCHIVE}/include"
+                    $InstallPath = Resolve-Path "${Env:LIBWEBP_ARCHIVE}/${Env:LIBWEBP_ARCHIVE}"
+                    Add-Content $Env:GITHUB_PATH "${InstallPath}/lib"
+                    Add-Content $Env:GITHUB_PATH "${InstallPath}/include"
                 
             -   uses: actions/checkout@v3
             
