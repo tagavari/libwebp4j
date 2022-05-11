@@ -17,7 +17,7 @@ jobs:
             -   name: Download libwebp
                 run: |
                     $Env:LIBWEBP_ARCHIVE = "libwebp-${Env:LIBWEBP_VER}-windows-x64"
-                    Invoke-WebRequest -OutFile {$Env:LIBWEBP_ARCHIVE}.zip https://storage.googleapis.com/downloads.webmproject.org/releases/webp/${Env:LIBWEBP_ARCHIVE}.zip
+                    Invoke-WebRequest -OutFile ${Env:LIBWEBP_ARCHIVE}.zip https://storage.googleapis.com/downloads.webmproject.org/releases/webp/${Env:LIBWEBP_ARCHIVE}.zip
                     "LIBWEBP_ARCHIVE=${Env:LIBWEBP_ARCHIVE}" >> $Env:GITHUB_PATH
                 
             -   name: Install libwebp
