@@ -21,9 +21,9 @@ jobs:
                 
             -   name: Install libwebp
                 run: |
-                Expand-Archive -Path libwebp.zip -DestinationPath libwebp
-                "libwebp/${Env:LIBWEBP_ARCHIVE}/lib" \>> $Env:GITHUB_PATH
-                "libwebp/${Env:LIBWEBP_ARCHIVE}/include" \>> $Env:GITHUB_PATH
+                    Expand-Archive -Path libwebp.zip -DestinationPath libwebp
+                    "libwebp/${Env:LIBWEBP_ARCHIVE}/lib" \>> $Env:GITHUB_PATH
+                    "libwebp/${Env:LIBWEBP_ARCHIVE}/include" \>> $Env:GITHUB_PATH
                 
             -   uses: actions/setup-java@v2
                 with:
