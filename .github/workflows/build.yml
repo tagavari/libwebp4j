@@ -28,6 +28,7 @@ jobs:
                     Add-Content $Env:GITHUB_PATH "${InstallPath}\include"
                     Write-Output "Install path: $InstallPath"
             -   run: Write-Output $Env:PATH
+            -   run:  tree libwebp-1.2.2-windows-x64 /F
             
             -   uses: actions/checkout@v3
             
