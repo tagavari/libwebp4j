@@ -17,14 +17,14 @@ jobs:
             -   name: Download libwebp
                 run: |
                     $Env:LIBWEBP_ARCHIVE = "libwebp-${Env:LIBWEBP_VER}-windows-x64"
-                    Invoke-WebRequest -OutFile libwebp.zip https://storage.googleapis.com/downloads.webmproject.org/releases/webp/${Env:LIBWEBP_ARCHIVE}.zip
+                    Invoke-WebRequest -OutFile $Env:LIBWEBP_ARCHIVE https://storage.googleapis.com/downloads.webmproject.org/releases/webp/${Env:LIBWEBP_ARCHIVE}.zip
                     "LIBWEBP_ARCHIVE=${Env:LIBWEBP_ARCHIVE}" >> $Env:GITHUB_PATH
                 
             -   name: Install webp libwebp
                 run: |
-                    Expand-Archive -Path libwebp.zip -DestinationPath libwebp
-                    "libwebp/${Env:LIBWEBP_ARCHIVE}/lib" >> $Env:GITHUB_PATH
-                    "libwebp/${Env:LIBWEBP_ARCHIVE}/include" >> $Env:GITHUB_PATH
+                    Expand-Archive -Path ${Env:LIBWEBP_ARCHIVE}.zip -DestinationPath $Env:LIBWEBP_ARCHIVE
+                    "${Env:LIBWEBP_ARCHIVE}/${Env:LIBWEBP_ARCHIVE}/lib" >> $Env:GITHUB_PATH
+                    "${Env:LIBWEBP_ARCHIVE}/${Env:LIBWEBP_ARCHIVE}/include" >> $Env:GITHUB_PATH
                 
             -   uses: actions/setup-java@v2
                 with:
