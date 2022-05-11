@@ -17,7 +17,7 @@ find_path(WEBP_INCLUDE_DIR
     REQUIRED
 )
 find_library(WEBP_LIBRARY
-    NAMES libwebp
+    NAMES webp libwebp
     HINTS /usr/lib /usr/local/lib /opt/homebrew/lib
     REQUIRED
 )
