@@ -14,10 +14,11 @@ jobs:
         name: Build Windows
         runs-on: windows-latest
         steps:
-            -   name: Set environment variables
-                run: |
-                    Add-Content $Env:GITHUB_ENV "LIBWEBP_ARCHIVE=libwebp-${{ env.LIBWEBP_VER }}-windows-x64"
-                    Add-Content $Env:GITHUB_ENV "LIBWEBP_DIR=${{ runner.temp }}\${{ env.LIBWEBP_ARCHIVE }}"
+            -   name: Set LIBWEBP_ARCHIVE environment variable
+                run: Add-Content $Env:GITHUB_ENV "LIBWEBP_ARCHIVE=libwebp-${{ env.LIBWEBP_VER }}-windows-x64"
+                
+            -   name: Set LIBWEBP_DIR environment variable
+                run: Add-Content $Env:GITHUB_ENV "LIBWEBP_DIR=${{ runner.temp }}\${{ env.LIBWEBP_ARCHIVE }}"
                 
             -   name: Download libwebp
                 run: Invoke-WebRequest -OutFile "${{ env.LIBWEBP_ARCHIVE }}.zip" "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/${{ env.LIBWEBP_ARCHIVE }}.zip"
