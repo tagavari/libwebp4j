@@ -13,20 +13,18 @@ jobs:
     build-windows:
         name: Build Windows
         runs-on: windows-latest
+        env:
+            LIBWEBP_ARCHIVE: libwebp-${{ env.LIBWEBP_VER }}-windows-x64
+            LIBWEBP_DIR: ${{ runner.temp }}\${{ env.LIBWEBP_ARCHIVE }}
         steps:
             -   name: Download libwebp
-                run: |
-                    $Env:LIBWEBP_ARCHIVE = "libwebp-${Env:LIBWEBP_VER}-windows-x64"
-                    Invoke-WebRequest -OutFile "${Env:LIBWEBP_ARCHIVE}.zip" "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/${Env:LIBWEBP_ARCHIVE}.zip"
-                    Add-Content $Env:GITHUB_ENV "LIBWEBP_ARCHIVE=${Env:LIBWEBP_ARCHIVE}"
+                run: Invoke-WebRequest -OutFile "${{ env.LIBWEBP_ARCHIVE }}.zip" "https://storage.googleapis.com/downloads.webmproject.org/releases/webp/${{ env.LIBWEBP_ARCHIVE }}.zip"
                 
             -   name: Install libwebp
                 run: |
-                    Expand-Archive -Path "${Env:LIBWEBP_ARCHIVE}.zip" -DestinationPath $Env:LIBWEBP_ARCHIVE
-                    $InstallPath = Resolve-Path "${Env:LIBWEBP_ARCHIVE}\${Env:LIBWEBP_ARCHIVE}"
-                    Add-Content $Env:GITHUB_PATH "${InstallPath}\lib"
-                    Add-Content $Env:GITHUB_PATH "${InstallPath}\include"
-                    Write-Output "Install path: $InstallPath"
+                    Expand-Archive -Path "${{ env.LIBWEBP_ARCHIVE }}.zip" -DestinationPath "${{ runner.temp }}"
+                    Add-Content $Env:GITHUB_PATH "${{ env.LIBWEBP_DIR }}\lib"
+                    Add-Content $Env:GITHUB_PATH "${{ env.LIBWEBP_DIR }}\include"
             
             -   uses: actions/checkout@v3
             
@@ -37,9 +35,6 @@ jobs:
 
             -   name: Set up Gradle
                 uses: gradle/gradle-build-action@v2
-
-            -   run: Write-Output $Env:PATH
-            -   run: Tree libwebp-1.2.2-windows-x64 /F
 
             -   name: Build
                 run: .\gradlew.bat build
