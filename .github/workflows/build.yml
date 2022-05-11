@@ -26,7 +26,9 @@ jobs:
                     $InstallPath = Resolve-Path "${Env:LIBWEBP_ARCHIVE}\${Env:LIBWEBP_ARCHIVE}"
                     Add-Content $Env:GITHUB_PATH "${InstallPath}\lib"
                     Add-Content $Env:GITHUB_PATH "${InstallPath}\include"
-                
+                    Write-Output "Install path: $InstallPath"
+            -   run: Write-Output $Env:PATH
+            
             -   uses: actions/checkout@v3
             
             -   uses: actions/setup-java@v2
