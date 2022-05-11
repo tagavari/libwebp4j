@@ -68,6 +68,11 @@ tasks.compileJava {
 }
 
 task<Exec>("prepareCMake") {
+    group = BasePlugin.BUILD_GROUP
+    description = "Generates build instructions using CMake."
+    
+    dependsOn(tasks.compileJava)
+    
     //Get the build directory
     workingDir = cmakeOutputDir
     cmakeOutputDir.mkdir()
@@ -83,11 +88,15 @@ task<Exec>("prepareCMake") {
         cmakeSourceDir,
         "-DJNI_GENERATED_DIR=$headerOutputDir",
         "-DJAVA_HOME=${org.gradle.internal.jvm.Jvm.current().javaHome}",
+        "-DCMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE=$nativeLibOutputDir",
         "-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=$nativeLibOutputDir"
     )
 }
 
 task<Exec>("buildCMake") {
+    group = BasePlugin.BUILD_GROUP
+    description = "Builds native libraries using CMake."
+    
     dependsOn("prepareCMake")
     
     workingDir = cmakeOutputDir
@@ -99,7 +108,9 @@ task<Exec>("buildCMake") {
     commandLine(
         "cmake",
         "--build",
-        cmakeOutputDir
+        cmakeOutputDir,
+        "--config",
+        "Release"
     )
 }
 
