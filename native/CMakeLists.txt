@@ -11,27 +11,18 @@ set(CMAKE_C_STANDARD 17)
 add_library(webp4j SHARED decode.c encode.c errors.c errors.h converter.c converter.h)
 
 #Link libwebp
-#FetchContent_Declare(
-#		webp
-#		GIT_REPOSITORY https://chromium.googlesource.com/webm/libwebp
-#		GIT_TAG        1.2.2
-#		GIT_SHALLOW    TRUE
-#)
-#FetchContent_MakeAvailable(webp)
-#target_link_libraries(webp4j webp)
-
-#Add homebrew search paths for Apple Silicon
-if(APPLE)
-    if(CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL "arm64")
-        target_link_directories(webp4j PRIVATE "/opt/homebrew/lib")
-        target_include_directories(webp4j PRIVATE "/opt/homebrew/include")
-    else()
-        target_link_directories(webp4j PRIVATE "/usr/local/lib")
-        target_include_directories(webp4j PRIVATE "/usr/local/include")
-    endif()
-endif()
-
-target_link_libraries(webp4j webp)
+find_path(WEBP_INCLUDE_DIR
+    NAMES webp/decode.h
+    PATHS /usr/include /usr/local/include /opt/homebrew/include
+    REQUIRED
+)
+find_library(WEBP_LIBRARY
+    NAMES libwebp
+    HINTS /usr/lib /usr/local/lib /opt/homebrew/lib
+    REQUIRED
+)
+target_include_directories(webp4j PRIVATE ${WEBP_INCLUDE_DIR})
+target_link_libraries(webp4j ${WEBP_LIBRARY})
 
 #Add JNI headers
 target_include_directories(webp4j PRIVATE "${JAVA_HOME}/include" "${JAVA_HOME}/include/win32" "${JAVA_HOME}/include/linux" "${JAVA_HOME}/include/darwin")

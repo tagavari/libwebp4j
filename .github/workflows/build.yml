@@ -5,16 +5,55 @@ on:
         branches: [ main ]
     pull_request:
         branches: [ main ]
-    workflow_call:
 
 env:
     LIBWEBP_VER: 1.2.2
-    LIBWEBP_DIR: libwebp
 
 jobs:
+    build-windows:
+        name: Build Windows
+        runs-on: windows-latest
+        env:
+            LIBWEBP_ARCHIVE: libwebp-${{ env.LIBWEBP_DIR }}-windows-x64
+        steps:
+            -   name: Download libwebp
+                run: Invoke-WebRequest -OutFile libwebp.zip https://storage.googleapis.com/downloads.webmproject.org/releases/webp/${Env:LIBWEBP_ARCHIVE}.zip
+                
+            -   name: Install libwebp
+                run: |
+                Expand-Archive -Path libwebp.zip -DestinationPath libwebp
+                "libwebp/${Env:LIBWEBP_ARCHIVE}/lib" \>> $Env:GITHUB_PATH
+                "libwebp/${Env:LIBWEBP_ARCHIVE}/include" \>> $Env:GITHUB_PATH
+                
+            -   uses: actions/setup-java@v2
+                with:
+                    distribution: 'temurin'
+                    java-version: '17'
+
+            -   name: Set up Gradle
+                uses: gradle/gradle-build-action@v2
+
+            -   name: Build
+                run: ./gradlew build
+
+            -   uses: actions/upload-artifact@v3.0.0
+                with:
+                    name: libwebp-windows
+                    path: build/libs/*.jar
+
+            -   name: Publish
+                if: github.event_name == 'push'
+                continue-on-error: true
+                env:
+                    GITHUB_ACTOR: ${{ github.actor }}
+                    GITHUB_TOKEN: ${{ github.token }}
+                run: ./gradlew publish
+    
     build-linux:
         name: Build Ubuntu
         runs-on: ubuntu-latest
+        env:
+            LIBWEBP_DIR: libwebp
         steps:
             -   name: Install libwebp configure dependencies
                 run: sudo apt install gcc make autoconf automake libtool
@@ -62,7 +101,7 @@ jobs:
                 with:
                     name: libwebp-linux
                     path: build/libs/*.jar
-
+            
             -   name: Publish
                 if: github.event_name == 'push'
                 continue-on-error: true
