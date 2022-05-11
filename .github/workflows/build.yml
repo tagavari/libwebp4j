@@ -20,7 +20,7 @@ jobs:
                     Invoke-WebRequest -OutFile libwebp.zip https://storage.googleapis.com/downloads.webmproject.org/releases/webp/${Env:LIBWEBP_ARCHIVE}.zip
                     "LIBWEBP_ARCHIVE=${Env:LIBWEBP_ARCHIVE}" >> $Env:GITHUB_PATH
                 
-            -   name: Install libwebp
+            -   name: Install webp libwebp
                 run: |
                     Expand-Archive -Path libwebp.zip -DestinationPath libwebp
                     "libwebp/${Env:LIBWEBP_ARCHIVE}/lib" >> $Env:GITHUB_PATH
