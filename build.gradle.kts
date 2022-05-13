@@ -62,6 +62,9 @@ tasks.jar {
 }
 
 tasks.compileJava {
+    //Compile for Java 8
+    options.release.set(8)
+    
     //Generate native headers when compiling Java
     headerOutputDir.mkdir()
     options.compilerArgs.addAll(listOf("-h", headerOutputDir.path))
