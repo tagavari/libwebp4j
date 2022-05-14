@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WebPTest {
 	//Load resource files
 	private final URL webpFile = Objects.requireNonNull(getClass().getClassLoader().getResource("test.webp"));
-	private final URL tiffFile = Objects.requireNonNull(getClass().getClassLoader().getResource("test.tiff"));
+	private final URL bmpFile = Objects.requireNonNull(getClass().getClassLoader().getResource("test.bmp"));
 	
 	@Test
 	@DisplayName("Versions should be reported correctly")
@@ -51,7 +51,7 @@ class WebPTest {
 	}
 	
 	@Test
-	@DisplayName("Decoded WebP should match TIFF")
+	@DisplayName("Decoded WebP should match BMP")
 	void testDecodeWebP() throws IOException, URISyntaxException, WebPException {
 		//Read the file
 		byte[] webpBytes = Files.readAllBytes(Paths.get(webpFile.toURI()));
@@ -61,32 +61,32 @@ class WebPTest {
 			new WebPDecoderOptions.Builder().build(),
 			WebPColorSpace.RGB);
 		
-		//Compare it with the TIFF file
-		BufferedImage tiffImage = ImageIO.read(tiffFile);
-		byte[] rawData = getRGBData(tiffImage);
+		//Compare it with the BMP file
+		BufferedImage bmpImage = ImageIO.read(bmpFile);
+		byte[] rawData = getRGBData(bmpImage);
 		
-		assertEquals(webPData.getWidth(), tiffImage.getWidth());
-		assertEquals(webPData.getHeight(), tiffImage.getHeight());
+		assertEquals(webPData.getWidth(), bmpImage.getWidth());
+		assertEquals(webPData.getHeight(), bmpImage.getHeight());
 		assertArrayEquals(webPData.getBytes(), rawData);
 	}
 	
 	/* @Test
 	@DisplayName("Encode -> Decode WebP data should match")
 	void testEncodeWebP() throws IOException, WebPException {
-		//Read the TIFF file
-		BufferedImage tiffImage = ImageIO.read(tiffFile);
-		byte[] tiffData = getRGBData(tiffImage);
+		//Read the BMP file
+		BufferedImage bmpImage = ImageIO.read(bmpFile);
+		byte[] bmpData = getRGBData(bmpImage);
 		
 		//Encode the file to WebP
-		byte[] webpBytes = WebPEncode.encodeLosslessRGB(tiffData, tiffImage.getWidth(), tiffImage.getHeight(), tiffImage.getWidth() * 3);
+		byte[] webpBytes = WebPEncode.encodeLosslessRGB(bmpData, bmpImage.getWidth(), bmpImage.getHeight(), bmpImage.getWidth() * 3);
 		
 		//Decode the file back to raw bytes
 		WebPDecodedData decodedData = WebPDecode.decode(webpBytes,
 			new WebPDecoderOptions.Builder().build(),
 			WebPColorSpace.RGB);
 		
-		assertEquals(decodedData.getWidth(), tiffImage.getWidth());
-		assertEquals(decodedData.getHeight(), tiffImage.getHeight());
-		assertEquals(decodedData.getBytes(), tiffData);
+		assertEquals(decodedData.getWidth(), bmpImage.getWidth());
+		assertEquals(decodedData.getHeight(), bmpImage.getHeight());
+		assertEquals(decodedData.getBytes(), bmpData);
 	} */
 }
