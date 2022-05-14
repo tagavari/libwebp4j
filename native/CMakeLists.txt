@@ -10,6 +10,9 @@ set(CMAKE_C_STANDARD 17)
 #Add native library
 add_library(webp4j SHARED decode.c encode.c errors.c errors.h converter.c converter.h)
 
+#Always use 'lib' prefix
+set_target_properties(webp4j PROPERTIES PREFIX "lib")
+
 #Link libwebp
 find_path(WEBP_INCLUDE_DIR
     NAMES webp/decode.h
