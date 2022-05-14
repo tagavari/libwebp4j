@@ -11,6 +11,7 @@ sudo apt install libjpeg-dev libpng-dev libtiff-dev libgif-dev
 
 #Jump into a random empty directory
 TEMP_DIR=$(mktemp -d)
+echo "Using working directory $TEMP_DIR for build"
 pushd "$TEMP_DIR" || exit
 
 #Clone repository
