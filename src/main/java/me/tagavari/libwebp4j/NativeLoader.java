@@ -37,7 +37,8 @@ class NativeLoader {
 		//Copy the library to a temporary location
 		Path extractedLibrary;
 		try {
-			extractedLibrary = Files.createTempFile(nativeLibraryName, resourceExtension);
+			Path extractedLibraryDir = Files.createTempDirectory(null);
+			extractedLibrary = extractedLibraryDir.resolve(nativeLibraryName + resourceExtension);
 			
 			try(InputStream resourceStream = resourceURL.openStream()) {
 				Files.copy(resourceStream, extractedLibrary, StandardCopyOption.REPLACE_EXISTING);
