@@ -62,8 +62,10 @@ tasks.jar {
 }
 
 tasks.compileJava {
-	//Compile for Java 8
-	options.release.set(8)
+	if(JavaVersion.current() >= JavaVersion.VERSION_1_10) {
+		//Compile for Java 8
+		options.release.set(8)
+	}
 	
 	//Generate native headers when compiling Java
 	headerOutputDir.mkdir()
