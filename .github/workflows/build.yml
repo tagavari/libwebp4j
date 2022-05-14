@@ -44,7 +44,7 @@ jobs:
             
             -   uses: actions/upload-artifact@v3.0.0
                 with:
-                    name: libwebp-${{ matrix-os }}
+                    name: libwebp-${{ matrix.os }}
                     path: build/libs/*.jar
     
     publish:
