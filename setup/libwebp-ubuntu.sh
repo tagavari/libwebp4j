@@ -14,7 +14,7 @@ TEMP_DIR=$(mktemp -d)
 pushd "$TEMP_DIR" || exit
 
 #Clone repository
-git clone --depth=1 --branch="$LIBWEBP_VER" https://chromium.googlesource.com/webm/libwebp
+git clone --depth 1 --branch "v$LIBWEBP_VER" "https://chromium.googlesource.com/webm/libwebp"
 cd libwebp
 
 #Autogen
