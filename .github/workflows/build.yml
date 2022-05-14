@@ -36,11 +36,10 @@ jobs:
                     distribution: 'temurin'
                     java-version: '17'
 
-            -   name: Set up Gradle
+            -   name: Build Gradle
                 uses: gradle/gradle-build-action@v2
-
-            -   name: Build
-                run: .\gradlew.bat build
+                with:
+                    arguments: build
 
             -   uses: actions/upload-artifact@v3.0.0
                 with:
@@ -96,12 +95,11 @@ jobs:
                 with:
                     distribution: 'temurin'
                     java-version: '17'
-            
-            -   name: Set up Gradle
+
+            -   name: Build Gradle
                 uses: gradle/gradle-build-action@v2
-            
-            -   name: Build
-                run: ./gradlew build
+                with:
+                    arguments: build
             
             -   uses: actions/upload-artifact@v3.0.0
                 with:
@@ -129,12 +127,11 @@ jobs:
                 with:
                     distribution: 'temurin'
                     java-version: '17'
-            
-            -   name: Set up Gradle
+
+            -   name: Build Gradle
                 uses: gradle/gradle-build-action@v2
-            
-            -   name: Build
-                run: ./gradlew build
+                with:
+                    arguments: build
             
             -   uses: actions/upload-artifact@v3.0.0
                 with:
