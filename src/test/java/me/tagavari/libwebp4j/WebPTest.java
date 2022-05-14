@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class WebPTest {
 	//Load resource files
-	private final URL webpFile = Objects.requireNonNull(WebPTest.class.getClassLoader().getResource("test.webp"));
-	private final URL tiffFile = Objects.requireNonNull(WebPTest.class.getClassLoader().getResource("test.tiff"));
+	private final URL webpFile = Objects.requireNonNull(getClass().getClassLoader().getResource("test.webp"));
+	private final URL tiffFile = Objects.requireNonNull(getClass().getClassLoader().getResource("test.tiff"));
 	
 	@Test
 	@DisplayName("Versions should be reported correctly")
