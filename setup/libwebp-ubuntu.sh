@@ -21,7 +21,7 @@ cd libwebp
 ./autogen.sh
 
 #Configure
-./configure.sh
+./configure
 
 #Make and install
 sudo make install
