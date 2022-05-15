@@ -14,7 +14,7 @@ add_library(webp4j SHARED decode.c encode.c errors.c errors.h converter.c conver
 set_target_properties(webp4j PROPERTIES PREFIX "lib")
 
 #Search for static libraries
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".so" ".lib")
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".lib")
 
 #Link libwebp
 find_path(WEBP_INCLUDE_DIR
