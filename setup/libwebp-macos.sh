@@ -12,6 +12,9 @@ INSTALL_DIR=$(mktemp -d)
 LIBWEBP_ARCHIVE_URL="https://storage.googleapis.com/downloads.webmproject.org/releases/webp/$LIBWEBP_ZIP"
 curl --location "$LIBWEBP_ARCHIVE_URL" | tar xvz -C "$INSTALL_DIR"
 
+#Record the original PATH
+echo "ORIGINAL_PATH=$PATH" >> "$GITHUB_ENV"
+
 #Add the directory to the PATH
-echo "$INSTALL_DIR/$LIBWEBP_ARCHIVE/lib" >> $GITHUB_PATH
-echo "$INSTALL_DIR/$LIBWEBP_ARCHIVE/include" >> $GITHUB_PATH
+echo "$INSTALL_DIR/$LIBWEBP_ARCHIVE/lib" >> "$GITHUB_PATH"
+echo "$INSTALL_DIR/$LIBWEBP_ARCHIVE/include" >> "$GITHUB_PATH"

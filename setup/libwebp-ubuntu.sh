@@ -5,28 +5,35 @@
 # binaries are not compatible with dynamic libraries.
 
 LIBWEBP_VER=$1
+LIBWEBP_ARCHIVE="libwebp-$LIBWEBP_VER"
+LIBWEBP_ZIP="$LIBWEBP_ARCHIVE.tar.gz"
 
-#Install build dependencies with apt
-sudo apt install libjpeg-dev libpng-dev libtiff-dev libgif-dev
+#Pick random directories
+BUILD_DIR=$(mktemp -d)
+INSTALL_DIR=$(mktemp -d)
 
-#Jump into a random empty directory
-TEMP_DIR=$(mktemp -d)
-pushd "$TEMP_DIR" || exit
+#Download and extract the release package
+INSTALL_DIR=$(mktemp -d)
+LIBWEBP_ARCHIVE_URL="https://storage.googleapis.com/downloads.webmproject.org/releases/webp/$LIBWEBP_ZIP"
+wget -qO- "$LIBWEBP_ARCHIVE_URL" | tar xvz -C "$INSTALL_DIR"
 
-#Clone repository
-git clone --depth 1 --branch "v$LIBWEBP_VER" "https://chromium.googlesource.com/webm/libwebp"
-cd libwebp
-
-#Autogen
-./autogen.sh
+#Jump into a random build directory
+pushd "$BUILD_DIR/$LIBWEBP_ARCHIVE" || exit
 
 #Configure
-./configure
+./configure --disable-dependency-tracking --disable-shared --with-libwebp --disable-libwebpmux --disable-libwebpdemux --prefix="$INSTALL_DIR"
 
 #Make and install
 make
-sudo make install
+make install
 
 #Clean up
 popd || exit
-rm -rf "$TEMP_DIR"
+rm -rf "$BUILD_DIR"
+
+#Record the original PATH
+echo "ORIGINAL_PATH=$PATH" >> "$GITHUB_ENV"
+
+#Add the directory to the PATH
+echo "$INSTALL_DIR/lib" >> "$GITHUB_PATH"
+echo "$INSTALL_DIR/include" >> "$GITHUB_PATH"

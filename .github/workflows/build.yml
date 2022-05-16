@@ -36,11 +36,19 @@ jobs:
                 with:
                     distribution: 'temurin'
                     java-version: ${{ matrix.java }}
-            
+
             -   name: Build Gradle
                 uses: gradle/gradle-build-action@v2
                 with:
-                    arguments: build
+                    arguments: assemble
+                    
+
+            -   name: Test Gradle
+                uses: gradle/gradle-build-action@v2
+                with:
+                    arguments: check
+                env:
+                    PATH: ${{ env.ORIGINAL_PATH }}
             
             -   uses: actions/upload-artifact@v3.0.0
                 with:
