@@ -13,6 +13,7 @@ jobs:
     test:
         name: Build and test
         strategy:
+            fail-fast: false
             matrix:
                 java: [ 8, 17 ]
                 os: [ ubuntu-latest, windows-latest, macos-latest ]
@@ -37,22 +38,26 @@ jobs:
                     distribution: 'temurin'
                     java-version: ${{ matrix.java }}
 
-            -   name: Build Gradle
+            -   name: Set up Gradle
                 uses: gradle/gradle-build-action@v2
-                with:
-                    arguments: assemble
-                    
 
-            -   name: Test Gradle
-                uses: gradle/gradle-build-action@v2
-                with:
-                    arguments: check
-                env:
-                    PATH: ${{ env.ORIGINAL_PATH }}
+            -   name: Test Gradle (Linux / macOS)
+                if: runner.os == 'Linux' || runner.os == 'macOS'
+                run: |
+                    ./gradlew assemble
+                    rm -rf "$LIBWEBP_DIR"
+                    ./gradlew check --info
+
+            -   name: Test Gradle (Windows)
+                if: runner.os == 'Windows'
+                run: |
+                    .\gradlew.bat assemble
+                    Remove-Item $Env:LIBWEBP_DIR -Recurse
+                    .\gradlew.bat check
             
             -   uses: actions/upload-artifact@v3.0.0
                 with:
-                    name: libwebp-${{ matrix.os }}
+                    name: libwebp-${{ matrix.os }}-${{ matrix.java }}
                     path: build/libs/*.jar
     
     publish:

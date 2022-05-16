@@ -13,9 +13,6 @@ add_library(webp4j SHARED decode.c encode.c errors.c errors.h converter.c conver
 #Always use 'lib' prefix
 set_target_properties(webp4j PROPERTIES PREFIX "lib")
 
-#Search for static libraries
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".a" ".lib")
-
 #Link libwebp
 find_path(WEBP_INCLUDE_DIR
     NAMES webp/decode.h
@@ -23,7 +20,7 @@ find_path(WEBP_INCLUDE_DIR
     REQUIRED
 )
 find_library(WEBP_LIBRARY
-    NAMES webp libwebp
+    NAMES "libwebp.a" "libwebp.lib"
     HINTS /usr/lib /usr/local/lib /opt/homebrew/lib
     REQUIRED
 )

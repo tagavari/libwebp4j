@@ -106,7 +106,7 @@ task<Exec>("buildCMake") {
 	
 	workingDir = cmakeOutputDir
 	
-	inputs.dir(cmakeOutputDir)
+	inputs.dir(cmakeSourceDir)
 	outputs.dir(nativeLibOutputDir)
 	
 	//Run CMake

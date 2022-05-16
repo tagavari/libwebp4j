@@ -11,9 +11,7 @@ Invoke-WebRequest -OutFile $DownloadPath $LibArchiveURL
 Expand-Archive -Path $DownloadPath -DestinationPath $Env:TEMP
 Remove-Item $DownloadPath
 
-#Record the original PATH
-Add-Content $Env:GITHUB_ENV "ORIGINAL_PATH=$Env:PATH"
-
-#Add the directory to the PATH
-Add-Content $Env:GITHUB_PATH "$Env:TEMP\$LibArchive\lib"
-Add-Content $Env:GITHUB_PATH "$Env:TEMP\$LibArchive\include"
+#Add the directory to the search paths
+Add-Content $Env:GITHUB_ENV "LIBWEBP_DIR=$Env:TEMP\$LibArchive"
+Add-Content $Env:GITHUB_ENV "INCLUDE=$Env:TEMP\$LibArchive\include"
+Add-Content $Env:GITHUB_ENV "LIB=$Env:TEMP\$LibArchive\lib"

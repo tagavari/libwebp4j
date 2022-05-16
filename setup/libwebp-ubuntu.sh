@@ -13,7 +13,6 @@ BUILD_DIR=$(mktemp -d)
 INSTALL_DIR=$(mktemp -d)
 
 #Download and extract the release package
-INSTALL_DIR=$(mktemp -d)
 LIBWEBP_ARCHIVE_URL="https://storage.googleapis.com/downloads.webmproject.org/releases/webp/$LIBWEBP_ZIP"
 wget -qO- "$LIBWEBP_ARCHIVE_URL" | tar xvz -C "$BUILD_DIR"
 
@@ -24,16 +23,16 @@ pushd "$BUILD_DIR/$LIBWEBP_ARCHIVE" || exit
 ./configure --disable-dependency-tracking --disable-shared --disable-libwebpmux --disable-libwebpdemux --prefix="$INSTALL_DIR"
 
 #Make and install
-make
+make CFLAGS="-fPIC"
 make install
 
 #Clean up
 popd || exit
 rm -rf "$BUILD_DIR"
 
-#Record the original PATH
-echo "ORIGINAL_PATH=$PATH" >> "$GITHUB_ENV"
-
-#Add the directory to the PATH
-echo "$INSTALL_DIR/lib" >> "$GITHUB_PATH"
-echo "$INSTALL_DIR/include" >> "$GITHUB_PATH"
+#Add the directory to the search paths
+{
+	echo "LIBWEBP_DIR=$INSTALL_DIR"
+	echo "INCLUDE=$INSTALL_DIR/include"
+	echo "LIB=$INSTALL_DIR/lib"
+} >> "$GITHUB_ENV"
