@@ -21,7 +21,7 @@ wget -qO- "$LIBWEBP_ARCHIVE_URL" | tar xvz -C "$BUILD_DIR"
 pushd "$BUILD_DIR/$LIBWEBP_ARCHIVE" || exit
 
 #Configure
-./configure --disable-dependency-tracking --disable-shared --with-libwebp --disable-libwebpmux --disable-libwebpdemux --prefix="$INSTALL_DIR"
+./configure --disable-dependency-tracking --disable-shared --disable-libwebpmux --disable-libwebpdemux --prefix="$INSTALL_DIR"
 
 #Make and install
 make
