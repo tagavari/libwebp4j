@@ -15,9 +15,9 @@ INSTALL_DIR=$(mktemp -d)
 #Download and extract the release package
 INSTALL_DIR=$(mktemp -d)
 LIBWEBP_ARCHIVE_URL="https://storage.googleapis.com/downloads.webmproject.org/releases/webp/$LIBWEBP_ZIP"
-wget -qO- "$LIBWEBP_ARCHIVE_URL" | tar xvz -C "$INSTALL_DIR"
+wget -qO- "$LIBWEBP_ARCHIVE_URL" | tar xvz -C "$BUILD_DIR"
 
-#Jump into a random build directory
+#Jump into a build directory
 pushd "$BUILD_DIR/$LIBWEBP_ARCHIVE" || exit
 
 #Configure
