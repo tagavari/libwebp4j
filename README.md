@@ -12,9 +12,11 @@ All functions are implemented under the `WebPDecode` and `WebPEncode` static cla
 
 ## Building
 
-Set `JAVA_HOME` to JDK 9 or later, and run `./gradlew build`. The library will be built to `build/libs/`.
+You will need JDK 9+, [Gradle](https://gradle.org), [CMake](https://cmake.org/), and [libwebp](https://developers.google.com/speed/webp/download) installed on your system.
 
-Since this library uses native code, the output is platform-specific.
+To build, run `./gradlew build`. The library will be built to `build/libs/`.
+
+Since this library uses native code, the produced archive is platform-specific.
 
 ## Examples
 
